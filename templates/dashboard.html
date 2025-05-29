@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Главная{% endblock %}
+{% block content %}
+<h2>Главная</h2>
+<div style="margin-bottom: 24px;">
+    <a href="{{ url_for('nft.generate_nft') }}">
+        <button style="font-size: 18px; padding: 12px 28px; background: #4caf50; color: #fff; border: none; border-radius: 8px; cursor: pointer;">
+            Создать новую картинку
+        </button>
+    </a>
+</div>
+{% if images %}
+    <div style="max-height: 70vh; overflow-y: auto; border: 1px solid #ccc; border-radius: 12px; padding: 10px;">
+        {% for img in images %}
+            <div style="display: flex; align-items: flex-start; gap: 0px; border-bottom: 1px solid #eee; padding: 20px 0;">
+                <div style="flex-shrink: 0; margin-right: 32px;">
+                    <img src="{{ img.image_url }}" alt="nft" width="200" style="border-radius: 12px; box-shadow:0 0 12px #ddd;">
+                </div>
+                <div style="flex: 1;">
+                    <div><b>Пользователь:</b> {{ img.username }}</div>
+                    <div><b>Название:</b> {{ img.title }}</div>
+                    <div><b>Дата:</b> {{ img.created_at.strftime('%H:%M %d:%m:%y') }}</div>
+                    <div><b>Слои:</b>
+                        <ul style="margin: 0; padding-left: 1em;">
+                            {% for layer in img.layers %}
+                                <li>{{ layer.category }}: {{ layer.file.split('.')[0] }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>Пока нет ни одной NFT-картинки.</p>
+{% endif %}
+{% endblock %}

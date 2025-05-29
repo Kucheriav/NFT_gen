@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}История NFT{% endblock %}
+{% block content %}
+<h2>Ваша история NFT</h2>
+{% if images %}
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.85);
+        }
+        .modal-content {
+            margin: 5% auto;
+            display: block;
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: 12px;
+            box-shadow: 0 0 24px #222;
+        }
+        .modal-close {
+            position: absolute; top: 24px; right: 40px; color: #fff;
+            font-size: 48px; font-weight: bold; cursor: pointer; z-index: 2000;
+        }
+    </style>
+    <div style="display: flex; flex-wrap: wrap; gap: 24px;">
+        {% for img in images %}
+            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 8px; width: 240px; text-align: center;">
+                <img src="{{ img.image_url }}" alt="NFT" width="200" style="display: block; margin: 0 auto 10px; cursor: pointer;"
+                     onclick="openModal('{{ img.image_url }}')">
+                <form method="post" action="{{ url_for('nft.nft_history') }}">
+                    <input type="hidden" name="nft_id" value="{{ img.id }}">
+                    <label>
+                        <b>Название:</b>
+                        <input type="text" name="title" value="{{ img.title }}" maxlength="100" style="width: 150px;">
+                    </label>
+                    <button type="submit" style="margin-top: 4px;">Сохранить</button>
+                </form>
+                <div><b>Дата генерации:</b> {{ img.created_at.strftime('%H:%M %d:%m:%y') }}</div>
+                <div><b>Слои:</b>
+                    <ul style="text-align: left;">
+                        {% for layer in img.layers %}
+                        <li>{{ layer.category }}: {{ layer.file.split('.')[0] }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <!-- Модальное окно -->
+    <div id="imgModal" class="modal">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImg" src="">
+    </div>
+    <script>
+        function openModal(src) {
+            document.getElementById('imgModal').style.display = 'block';
+            document.getElementById('modalImg').src = src;
+        }
+        function closeModal() {
+            document.getElementById('imgModal').style.display = 'none';
+            document.getElementById('modalImg').src = '';
+        }
+        // Закрытие по Esc
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape") closeModal();
+        });
+        // Закрытие по клику вне картинки
+        document.getElementById('imgModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+{% else %}
+    <p>У вас пока нет NFT-картинок.</p>
+{% endif %}
+{% endblock %}

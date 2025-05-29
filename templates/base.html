@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}NFT Generator{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+</head>
+<body>
+    <header>
+        <h1>NFT Generator</h1>
+        {% if session.username %}
+            <span>Вы вошли как {{ session.username }}</span>
+            <a href="{{ url_for('auth.logout') }}">Выйти</a>
+            <a href="{{ url_for('nft.dashboard') }}">Главная</a>
+            <a href="{{ url_for('nft.nft_history') }}">История</a>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}">Войти</a>
+            <a href="{{ url_for('auth.register') }}">Регистрация</a>
+        {% endif %}
+    </header>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

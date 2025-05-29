@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Ваша новая NFT{% endblock %}
+{% block content %}
+<h2>Ваша NFT-картинка</h2>
+<img src="{{ image_url }}" alt="NFT" width="400">
+<form method="post" action="{{ url_for('nft.generate_nft') }}" style="margin-top: 24px;">
+    <input type="hidden" name="nft_id" value="{{ nft.id }}">
+    <label>
+        <b>Название:</b>
+        <input type="text" name="title" value="{{ nft.title }}" maxlength="100" style="width: 300px;">
+    </label>
+    <button type="submit">Сохранить название</button>
+</form>
+<ul>
+    <li><b>Слои:</b>
+        <ul>
+            {% for layer in nft.layers %}
+                <li>{{ layer.category }}: {{ layer.file.split('.')[0] }}</li>
+            {% endfor %}
+        </ul>
+    </li>
+    <li><b>Дата генерации:</b> {{ nft.created_at.strftime('%H:%M %d:%m:%y') }}</li>
+</ul>
+<a href="{{ url_for('nft.dashboard') }}">Сгенерировать ещё</a> |
+<a href="{{ url_for('nft.nft_history') }}">Посмотреть историю</a>
+{% endblock %}
