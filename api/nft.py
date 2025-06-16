@@ -38,15 +38,15 @@ def generate_nft():
         else:
             # Это генерация новой NFT через POST (если вдруг что-то отправили)
             db = SessionLocal()
-            filename, layers, auto_title = generate_unique_image(db)
-            nft = create_nft_image(db, session["user_id"], filename, layers, auto_title)
+            filename, layers, auto_title, layers_hash = generate_unique_image(db)
+            nft = create_nft_image(db, session["user_id"], filename, layers, auto_title,layers_hash)
             db.close()
             return redirect(url_for("nft.nft_result", nft_id=nft.id))
     else:
         # GET: сразу генерируем и редиректим на результат, как раньше
         db = SessionLocal()
-        filename, layers, auto_title = generate_unique_image(db)
-        nft = create_nft_image(db, session["user_id"], filename, layers, auto_title)
+        filename, layers, auto_title, layers_hash = generate_unique_image(db)
+        nft = create_nft_image(db, session["user_id"], filename, layers, auto_title, layers_hash)
         db.close()
         return redirect(url_for("nft.nft_result", nft_id=nft.id))
 

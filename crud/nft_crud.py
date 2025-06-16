@@ -2,8 +2,8 @@ from models.nft_image import NFTImage
 from sqlalchemy.orm import joinedload
 
 
-def create_nft_image(session, user_id, filename, layers, title):
-    nft = NFTImage(user_id=user_id, filename=filename, layers=layers, title=title)
+def create_nft_image(session, user_id, filename, layers, title, layers_hash):
+    nft = NFTImage(user_id=user_id, filename=filename, layers=layers, title=title, layers_hash=layers_hash)
     session.add(nft)
     session.commit()
     session.refresh(nft)
