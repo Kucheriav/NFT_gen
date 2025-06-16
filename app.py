@@ -18,9 +18,10 @@ app.register_blueprint(auth_bp)
 
 @app.route("/")
 def index():
-    if "user_id" in session:
-        return redirect(url_for("nft.dashboard"))
-    return redirect(url_for("auth.login"))
+    # if "user_id" in session:
+    #     return redirect(url_for("nft.dashboard"))
+    # return redirect(url_for("auth.login"))
+    return redirect(url_for("nft.dashboard"))
 
 if __name__ == "__main__":
     app.run(debug=True)

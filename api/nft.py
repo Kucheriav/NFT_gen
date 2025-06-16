@@ -8,8 +8,8 @@ bp = Blueprint('nft', __name__, url_prefix='/nft')
 
 @bp.route("/dashboard")
 def dashboard():
-    if "user_id" not in session:
-        return redirect(url_for("auth.login"))
+    # if "user_id" not in session:
+    #     return redirect(url_for("auth.login"))
     db = SessionLocal()
     # Получить все картинки всех пользователей с их username
     images = get_all_nft_images_with_users(db)
