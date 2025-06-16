@@ -63,6 +63,7 @@ def nft_result(nft_id):
         flash("NFT не найден.")
         return redirect(url_for("nft.dashboard"))
     image_url = url_for('static', filename='generated/' + nft.filename)
+    nft["created_at_local"] = to_user_tz(nft["created_at"])
     return render_template("nft_result.html", nft=nft, image_url=image_url)
 
 
@@ -82,4 +83,5 @@ def nft_history():
     db.close()
     for img in images:
         img.image_url = url_for('static', filename='generated/' + img.filename)
+        img["created_at_local"] = to_user_tz(img["created_at"])
     return render_template("nft_history.html", images=images)
