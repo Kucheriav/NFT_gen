@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, session, redirect, render_template, url_for, flash
-from services.nft_generator import generate_image
+from services.nft_generator import generate_unique_image
 from crud.nft_crud import *
 from database import SessionLocal
 
@@ -37,14 +37,14 @@ def generate_nft():
                 return redirect(url_for("nft.dashboard"))
         else:
             # Это генерация новой NFT через POST (если вдруг что-то отправили)
-            filename, layers, auto_title = generate_image()
+            filename, layers, auto_title = generate_unique_image()
             db = SessionLocal()
             nft = create_nft_image(db, session["user_id"], filename, layers, auto_title)
             db.close()
             return redirect(url_for("nft.nft_result", nft_id=nft.id))
     else:
         # GET: сразу генерируем и редиректим на результат, как раньше
-        filename, layers, auto_title = generate_image()
+        filename, layers, auto_title = generate_unique_image()
         db = SessionLocal()
         nft = create_nft_image(db, session["user_id"], filename, layers, auto_title)
         db.close()

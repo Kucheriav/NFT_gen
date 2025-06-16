@@ -5,7 +5,9 @@ from dotenv import load_dotenv
 import os
 
 
-load_dotenv('.local_env')
+base_dir = os.path.dirname(os.path.abspath(__file__))
+dotenv_path = os.path.join(base_dir, '.env')
+load_dotenv(dotenv_path)
 MYSQL_USER = os.getenv('MYSQL_USER')
 MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD')
 MYSQL_HOST = os.getenv('MYSQL_HOST')
