@@ -38,7 +38,7 @@
                     </label>
                     <button type="submit" style="margin-top: 4px;">Сохранить</button>
                 </form>
-                <div><b>Дата генерации:</b> {{ img.created_at.strftime('%H:%M %d:%m:%y') }}</div>
+                <div><b>Дата генерации:</b> {{ img.created_at_local.strftime('%H:%M %d.%m.%y') }}</div>
                 <div><b>Слои:</b>
                     <ul style="text-align: left;">
                         {% for layer in img.layers %}

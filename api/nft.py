@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, session, redirect, render_templat
 from services.nft_generator import generate_unique_image
 from crud.nft_crud import *
 from database import SessionLocal
+from services.time_utils import to_user_tz
 
 bp = Blueprint('nft', __name__, url_prefix='/nft')
 
@@ -15,6 +16,7 @@ def dashboard():
     db.close()
     for img in images:
         img["image_url"] = url_for('static', filename='generated/' + img["filename"])
+        img["created_at_local"] = to_user_tz(img["created_at"])
     return render_template("dashboard.html", images=images)
 
 @bp.route("/generate", methods=["POST", "GET"])

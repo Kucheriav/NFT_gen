@@ -19,7 +19,7 @@
             {% endfor %}
         </ul>
     </li>
-    <li><b>Дата генерации:</b> {{ nft.created_at.strftime('%H:%M %d:%m:%y') }}</li>
+    <li><b>Дата генерации:</b> {{ nft.created_at_local.strftime('%H:%M %d.%m.%y') }}</li>
 </ul>
 <a href="{{ url_for('nft.dashboard') }}">Сгенерировать ещё</a> |
 <a href="{{ url_for('nft.nft_history') }}">Посмотреть историю</a>

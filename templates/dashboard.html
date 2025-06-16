@@ -19,7 +19,7 @@
                 <div style="flex: 1;">
                     <div><b>Пользователь:</b> {{ img.username }}</div>
                     <div><b>Название:</b> {{ img.title }}</div>
-                    <div><b>Дата:</b> {{ img.created_at.strftime('%H:%M %d:%m:%y') }}</div>
+                    <div><b>Дата:</b> {{ img.created_at_local.strftime('%H:%M %d.%m.%y') }}</div>
                     <div><b>Слои:</b>
                         <ul style="margin: 0; padding-left: 1em;">
                             {% for layer in img.layers %}
