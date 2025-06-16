@@ -23,7 +23,8 @@ def update_nft_title(session, nft_id, user_id, new_title):
         session.refresh(nft)
     return nft
 
-
+def is_hash_exists(db, layers_hash):
+    return db.query(NFTImage).filter(NFTImage.layers_hash == layers_hash).first() is not None
 
 def get_all_nft_images_with_users(session):
     """

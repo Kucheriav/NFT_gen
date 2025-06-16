@@ -13,9 +13,11 @@ def register():
         db = SessionLocal()
         if get_user_by_username(db, username):
             flash("Пользователь уже существует")
+            db.close()
             return redirect(url_for("auth.register"))
         create_user(db, username, generate_password_hash(password))
         flash("Успешная регистрация! Войдите.")
+        db.close()
         return redirect(url_for("auth.login"))
     return render_template("register.html")
 
@@ -29,8 +31,10 @@ def login():
         if user and check_password_hash(user.password_hash, password):
             session["user_id"] = user.id
             session["username"] = user.username
+            db.close()
             return redirect(url_for("nft.dashboard"))
         flash("Неверный логин или пароль")
+        db.close()
     return render_template("login.html")
 
 @bp.route("/logout")

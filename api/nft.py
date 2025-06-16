@@ -12,6 +12,7 @@ def dashboard():
     db = SessionLocal()
     # Получить все картинки всех пользователей с их username
     images = get_all_nft_images_with_users(db)
+    db.close()
     for img in images:
         img["image_url"] = url_for('static', filename='generated/' + img["filename"])
     return render_template("dashboard.html", images=images)
@@ -27,6 +28,7 @@ def generate_nft():
             new_title = request.form["title"].strip()
             db = SessionLocal()
             nft = update_nft_title(db, nft_id, session["user_id"], new_title)
+            db.close()
             if nft:
                 flash("Название сохранено!")
                 return redirect(url_for("nft.nft_result", nft_id=nft.id))
@@ -38,12 +40,14 @@ def generate_nft():
             filename, layers, auto_title = generate_image()
             db = SessionLocal()
             nft = create_nft_image(db, session["user_id"], filename, layers, auto_title)
+            db.close()
             return redirect(url_for("nft.nft_result", nft_id=nft.id))
     else:
         # GET: сразу генерируем и редиректим на результат, как раньше
         filename, layers, auto_title = generate_image()
         db = SessionLocal()
         nft = create_nft_image(db, session["user_id"], filename, layers, auto_title)
+        db.close()
         return redirect(url_for("nft.nft_result", nft_id=nft.id))
 
 @bp.route("/nft/<int:nft_id>", methods=["GET"])
@@ -52,6 +56,7 @@ def nft_result(nft_id):
         return redirect(url_for("auth.login"))
     db = SessionLocal()
     nft = get_nft_by_id(db, nft_id, session["user_id"])
+    db.close()
     if not nft:
         flash("NFT не найден.")
         return redirect(url_for("nft.dashboard"))
@@ -68,9 +73,11 @@ def nft_history():
         nft_id = int(request.form["nft_id"])
         new_title = request.form["title"].strip()
         update_nft_title(db, nft_id, session["user_id"], new_title)
+        db.close()
         flash("Название обновлено!")
         return redirect(url_for("nft.nft_history"))
     images = get_user_nft_images(db, session["user_id"])
+    db.close()
     for img in images:
         img.image_url = url_for('static', filename='generated/' + img.filename)
     return render_template("nft_history.html", images=images)

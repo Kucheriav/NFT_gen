@@ -11,6 +11,7 @@ class NFTImage(Base):
     filename = Column(String(100), nullable=False)
     title = Column(String(300), nullable=False, default="")
     layers = Column(JSON, nullable=False)
+    layers_hash = Column(String(64), unique=True, nullable=False)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now)
     user = relationship("User")
